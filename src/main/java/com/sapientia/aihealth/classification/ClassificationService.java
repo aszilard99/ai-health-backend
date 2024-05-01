@@ -4,13 +4,16 @@ import ai.djl.MalformedModelException;
 import ai.djl.inference.Predictor;
 import ai.djl.modality.Classifications;
 import ai.djl.modality.cv.Image;
+import ai.djl.modality.cv.translator.ImageClassificationTranslator;
 import ai.djl.repository.zoo.Criteria;
 import ai.djl.repository.zoo.ModelNotFoundException;
 import ai.djl.repository.zoo.ZooModel;
+import ai.djl.translate.Pipeline;
 import ai.djl.translate.TranslateException;
 
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.List;
 
 public class ClassificationService {
     private static ZooModel<Image, Classifications> model;
@@ -24,7 +27,9 @@ public class ClassificationService {
             Criteria<Image, Classifications> criteria = Criteria.builder()
                     .setTypes(Image.class, Classifications.class)
                     .optModelPath(Paths.get("simple-cnn-kaggle-brain-converted"))
-                    .optEngine("TensorFlow")
+                    //.optTranslator(ImageClassificationTranslator.builder().setSynsetArtifactName("synset.txt").build())
+                    .optTranslator(ImageClassificationTranslator.builder().optSynset(List.of("No Tumor", "Tumor")).setPipeline(new Pipeline()).build())
+                    .optModelName("saved_model")
                     .build();
 
             model = criteria.loadModel();
