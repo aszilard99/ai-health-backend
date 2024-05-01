@@ -28,8 +28,8 @@ public class ClassificationService {
                     .setTypes(Image.class, Classifications.class)
                     .optModelPath(Paths.get("simple-cnn-kaggle-brain-converted"))
                     //.optTranslator(ImageClassificationTranslator.builder().setSynsetArtifactName("synset.txt").build())
-                    .optTranslator(ImageClassificationTranslator.builder().optSynset(List.of("No Tumor", "Tumor")).setPipeline(new Pipeline()).build())
                     .optModelName("saved_model")
+                    .optEngine("TensorFlow")
                     .build();
 
             model = criteria.loadModel();
