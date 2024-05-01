@@ -1,38 +1,54 @@
 package com.sapientia.aihealth.classification;
 
 import ai.djl.MalformedModelException;
+import ai.djl.inference.Predictor;
 import ai.djl.modality.Classifications;
 import ai.djl.modality.cv.Image;
-import ai.djl.modality.cv.translator.ImageClassificationTranslator;
 import ai.djl.repository.zoo.Criteria;
 import ai.djl.repository.zoo.ModelNotFoundException;
 import ai.djl.repository.zoo.ZooModel;
+import ai.djl.translate.TranslateException;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class ClassificationService {
+    private static ZooModel<Image, Classifications> model;
+    private static Predictor<Image, Classifications> predictor;
 
-    public static void loadModel() {
-
+    private static void loadModel() {
+        if (model != null) {
+            return;
+        }
         try {
-
-            byte[] graphDef = Files.readAllBytes(Paths.get("./simple-cnn-kaggle-brain-converted-default"));
-
             Criteria<Image, Classifications> criteria = Criteria.builder()
-                    .setTypes(Image.class, Classifications.class) // defines input and output data type
-                    .optModelPath(Paths.get("simple-cnn-kaggle-brain-converted")) // search models in specified path
+                    .setTypes(Image.class, Classifications.class)
+                    .optModelPath(Paths.get("simple-cnn-kaggle-brain-converted"))
                     .optEngine("TensorFlow")
                     .build();
 
-            ZooModel<Image, Classifications> model = criteria.loadModel();
+            model = criteria.loadModel();
             System.out.println("Successfully loaded model");
-
 
         } catch (IOException | ModelNotFoundException | MalformedModelException e) {
             e.printStackTrace();
             System.out.println("Error with loading model");
         }
+    }
+
+    public static ZooModel<Image, Classifications> getModel() {
+        loadModel();
+        return model;
+    }
+
+    public static Predictor<Image, Classifications> getPredictor() {
+        if (predictor == null){
+            predictor = ClassificationService.getModel().newPredictor();
+        }
+        return predictor;
+    }
+
+    public static Classifications predict(Image img) throws TranslateException {
+        return getPredictor().predict(img);
     }
 }
