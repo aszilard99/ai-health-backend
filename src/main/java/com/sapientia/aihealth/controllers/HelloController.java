@@ -4,17 +4,12 @@ import ai.djl.modality.Classifications;
 import ai.djl.modality.cv.Image;
 import ai.djl.modality.cv.ImageFactory;
 import ai.djl.translate.TranslateException;
-import com.sapientia.aihealth.classification.ClassificationService;
+import com.sapientia.aihealth.ai.classification.InferenceService;
 import com.sapientia.aihealth.util.CustomImageReader;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.imageio.ImageIO;
-import javax.imageio.ImageReader;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Paths;
 
 @RestController
 public class HelloController {
@@ -28,8 +23,9 @@ public class HelloController {
             BufferedImage bufferedImage = CustomImageReader.loadImage("Y103.jpg");
 
             Image img = ImageFactory.getInstance().fromImage(bufferedImage);
+            //Image img = ImageFactory.getInstance().fromInputStream()
 
-            result = ClassificationService.predict(img);
+            result = InferenceService.predict(img);
             probability = result.getProbabilities().get(0);
             System.out.println(" result " + probability);
         } catch (TranslateException e) {

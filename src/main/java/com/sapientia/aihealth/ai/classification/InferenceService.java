@@ -1,21 +1,18 @@
-package com.sapientia.aihealth.classification;
+package com.sapientia.aihealth.ai.classification;
 
 import ai.djl.MalformedModelException;
 import ai.djl.inference.Predictor;
 import ai.djl.modality.Classifications;
 import ai.djl.modality.cv.Image;
-import ai.djl.modality.cv.translator.ImageClassificationTranslator;
 import ai.djl.repository.zoo.Criteria;
 import ai.djl.repository.zoo.ModelNotFoundException;
 import ai.djl.repository.zoo.ZooModel;
-import ai.djl.translate.Pipeline;
 import ai.djl.translate.TranslateException;
 
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.List;
 
-public class ClassificationService {
+public class InferenceService {
     private static ZooModel<Image, Classifications> model;
     private static Predictor<Image, Classifications> predictor;
 
@@ -48,7 +45,7 @@ public class ClassificationService {
 
     public static Predictor<Image, Classifications> getPredictor() {
         if (predictor == null){
-            predictor = ClassificationService.getModel().newPredictor();
+            predictor = InferenceService.getModel().newPredictor();
         }
         return predictor;
     }
