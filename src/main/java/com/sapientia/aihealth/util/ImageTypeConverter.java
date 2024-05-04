@@ -1,5 +1,7 @@
 package com.sapientia.aihealth.util;
 
+import ai.djl.modality.cv.Image;
+import ai.djl.modality.cv.ImageFactory;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
 import org.opencv.imgcodecs.Imgcodecs;
@@ -16,8 +18,6 @@ import static org.opencv.imgcodecs.Imgcodecs.imdecode;
 public class ImageTypeConverter {
 
     public Mat byteArrayToMat(byte[] imageBytes) {
-        //this might not work properly beacuse opencv package has to be staticly imported
-        //might have to change constant to: IMREAD_UNCHANGED
         Mat matImage = imdecode(new MatOfByte(imageBytes), IMREAD_UNCHANGED);
 
         return matImage;
@@ -31,5 +31,15 @@ public class ImageTypeConverter {
         BufferedImage bufImage = ImageIO.read(is);
 
         return bufImage;
+    }
+
+    public Image matToDJLImage(Mat matImage) throws IOException {
+        MatOfByte matOfByte = new MatOfByte();
+        Imgcodecs.imencode(".jpg", matImage, matOfByte);
+        byte[] byteArray = matOfByte.toArray();
+        InputStream is = new ByteArrayInputStream(byteArray);
+        Image image = ImageFactory.getInstance().fromInputStream(is);
+
+        return image;
     }
 }

@@ -23,7 +23,7 @@ public class HelloController {
             BufferedImage bufferedImage = CustomImageReader.loadImage("Y103.jpg");
 
             Image img = ImageFactory.getInstance().fromImage(bufferedImage);
-            //Image img = ImageFactory.getInstance().fromInputStream()
+
 
             result = InferenceService.predict(img);
             probability = result.getProbabilities().get(0);

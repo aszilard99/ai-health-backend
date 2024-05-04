@@ -1,6 +1,5 @@
 package com.sapientia.aihealth.ai.preprocessing;
 
-import nu.pattern.OpenCV;
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 
@@ -14,10 +13,8 @@ public class ImagePreprocessingService {
         Mat gray = new Mat();
         Imgproc.cvtColor(image, gray, Imgproc.COLOR_BGR2GRAY);
 
-        // Apply Gaussian blur
         Imgproc.GaussianBlur(gray, gray, new Size(5, 5), 0);
 
-        // Threshold the image
         Mat thresh = new Mat();
         Imgproc.threshold(gray, thresh, 45, 255, Imgproc.THRESH_BINARY);
 
@@ -26,7 +23,6 @@ public class ImagePreprocessingService {
         Imgproc.erode(thresh, thresh, kernel, new Point(-1, -1), 2);
         Imgproc.dilate(thresh, thresh, kernel, new Point(-1, -1), 2);
 
-        // Find contours
         List<MatOfPoint> contours = new ArrayList<>();
         Mat hierarchy = new Mat();
         Imgproc.findContours(thresh, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
@@ -43,7 +39,7 @@ public class ImagePreprocessingService {
         }
 
         if (largestContour == null) {
-            return image; // Return the original image if no contours found
+            return image;
         }
 
         // Find extreme points
@@ -53,12 +49,20 @@ public class ImagePreprocessingService {
         int w = boundingRect.width;
         int h = boundingRect.height;
 
-        // Crop the image
         Mat croppedImage = new Mat(image, boundingRect);
         return croppedImage;
     }
 
     public void resizeImage(Mat image, Integer xSize, Integer ySize) {
         Imgproc.resize(image, image, new Size(xSize, ySize),0,0, Imgproc.INTER_CUBIC);
+    }
+
+    public Mat normalizeImage(Mat image) {
+
+        Mat normalizedImage = new Mat(image.size(), CvType.CV_32F);
+        // Normalize the image pixel values to range [0, 1]
+        Core.normalize(image, normalizedImage, 0, 1, Core.NORM_MINMAX, CvType.CV_32F);
+
+        return normalizedImage;
     }
 }
