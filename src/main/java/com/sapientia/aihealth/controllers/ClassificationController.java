@@ -18,11 +18,6 @@ public class ClassificationController {
         boolean res = false;
 
         try {
-            //Image img2 = ImageFactory.getInstance().fromInputStream(image.getInputStream());
-            //BufferedImage img = ImageIO.read(image.getInputStream());
-            //resize
-            //BufferedImage processedImg = ImageResizer.resizeImage(img, 240, 240);
-
 
             ImagePreprocessingService imgPreprocessor = new ImagePreprocessingService();
             ImageTypeConverter imageTypeConverter = new ImageTypeConverter();
@@ -31,12 +26,13 @@ public class ClassificationController {
             //crop brain contour
             matImage = imgPreprocessor.cropBrainContour(matImage);
 
-
-
-
-
             //for debugging
             res = ImageIO.write(imageTypeConverter.matToBufferedImage(matImage), "jpg", new File("./processedImg.jpg"));
+
+            imgPreprocessor.resizeImage(matImage, 240, 240);
+
+            //for debugging
+            res = ImageIO.write(imageTypeConverter.matToBufferedImage(matImage), "jpg", new File("./processedResizedImg.jpg"));
 
         } catch (Exception e) {
             e.printStackTrace();

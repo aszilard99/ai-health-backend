@@ -57,4 +57,8 @@ public class ImagePreprocessingService {
         Mat croppedImage = new Mat(image, boundingRect);
         return croppedImage;
     }
+
+    public void resizeImage(Mat image, Integer xSize, Integer ySize) {
+        Imgproc.resize(image, image, new Size(xSize, ySize),0,0, Imgproc.INTER_CUBIC);
+    }
 }
