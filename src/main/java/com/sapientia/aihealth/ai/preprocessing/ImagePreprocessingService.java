@@ -1,5 +1,6 @@
 package com.sapientia.aihealth.ai.preprocessing;
 
+import nu.pattern.OpenCV;
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 
@@ -7,9 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ImagePreprocessingService {
-    static {
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-    }
 
     public Mat cropBrainContour(Mat image) {
         // Convert the image to grayscale
