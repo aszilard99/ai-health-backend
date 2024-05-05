@@ -28,7 +28,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.opencv.imgcodecs.Imgcodecs.IMREAD_UNCHANGED;
 import static org.opencv.imgcodecs.Imgcodecs.imdecode;
@@ -52,31 +54,10 @@ public class ImageTypeConverter {
         return bufImage;
     }
 
-    //might need to play around with Tensor type TFLOAT32 instead of TUint8
-    public Tensor multipartFileToTensorV1(MultipartFile image) {
-        try {
-
-            BufferedImage img = ImageIO.read(image.getInputStream());
-            Raster raster = img.getRaster();
-
-            Tensor reshapedImage = reshape(raster);
-
-
-
-            //decodeImageToTensor(raster);
-
-            return null; //TUint8.tensorOf(byteNdArray);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
     /**
      * Turns a 1 dimension int array to a Tensor of the shape of the original image from a Raster
      * ***/
-    public Tensor reshape(Raster raster) {
+    public Tensor rasterToTensor(Raster raster) {
 
         int numBands = raster.getNumBands();
         int width = raster.getWidth();
