@@ -4,7 +4,6 @@ import ai.djl.MalformedModelException;
 import ai.djl.inference.Predictor;
 import ai.djl.modality.Classifications;
 import ai.djl.modality.cv.Image;
-import ai.djl.modality.cv.translator.ImageClassificationTranslator;
 import ai.djl.repository.zoo.Criteria;
 import ai.djl.repository.zoo.ModelNotFoundException;
 import ai.djl.repository.zoo.ZooModel;
@@ -13,7 +12,7 @@ import ai.djl.translate.TranslateException;
 import java.io.IOException;
 import java.nio.file.Paths;
 
-public class InferenceService {
+public class DJLInferenceService {
     private static ZooModel<Image, Classifications> model;
     private static Predictor<Image, Classifications> predictor;
 
@@ -24,7 +23,7 @@ public class InferenceService {
         try {
             Criteria<Image, Classifications> criteria = Criteria.builder()
                     .setTypes(Image.class, Classifications.class)
-                    .optModelPath(Paths.get("vgg16extended-kaggle-brain"))
+                    .optModelPath(Paths.get("colab_simplecnn_savedmodel_format"))
                     //.optTranslator(ImageClassificationTranslator.builder().setSynsetArtifactName("synset.txt").build())
                     //.optModelName("saved_model")
                     .optEngine("TensorFlow")
@@ -46,7 +45,7 @@ public class InferenceService {
 
     public static Predictor<Image, Classifications> getPredictor() {
         if (predictor == null){
-            predictor = InferenceService.getModel().newPredictor();
+            predictor = DJLInferenceService.getModel().newPredictor();
         }
         return predictor;
     }

@@ -28,6 +28,7 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- Deep Java Library -->
 		<dependency>
 			<groupId>ai.djl</groupId>
 			<artifactId>api</artifactId>
@@ -47,6 +48,16 @@
 			<scope>runtime</scope>
 			<version>2.7.0</version>
 		</dependency>
+
+
+		<!-- Tensorflow java -->
+		<dependency>
+			<groupId>org.tensorflow</groupId>
+			<artifactId>tensorflow-core-platform</artifactId>
+			<version>0.5.0</version>
+		</dependency>
+
+		<!-- Opencv -->
 		<dependency>
 			<groupId>org.openpnp</groupId>
 			<artifactId>opencv</artifactId>

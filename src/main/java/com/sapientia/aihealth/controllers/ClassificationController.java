@@ -2,25 +2,29 @@ package com.sapientia.aihealth.controllers;
 
 import ai.djl.modality.Classifications;
 import ai.djl.modality.cv.Image;
-import ai.djl.modality.cv.ImageFactory;
-import com.sapientia.aihealth.ai.classification.InferenceService;
+import com.sapientia.aihealth.ai.classification.DJLInferenceService;
+import com.sapientia.aihealth.ai.classification.TfInferenceService;
 import com.sapientia.aihealth.ai.preprocessing.ImagePreprocessingService;
 import com.sapientia.aihealth.util.ImageTypeConverter;
 import org.opencv.core.Mat;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.tensorflow.SavedModelBundle;
+import org.tensorflow.ndarray.IntNdArray;
+import org.tensorflow.ndarray.NdArray;
+import org.tensorflow.ndarray.NdArrays;
+import org.tensorflow.ndarray.Shape;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.nio.Buffer;
 
 @RestController
 public class ClassificationController {
 
-    @PostMapping("/upload")
-    public boolean classify(MultipartFile image){
+    @PostMapping("/v1/upload")
+    public boolean classifyV1(MultipartFile image){
         boolean res = false;
 
         try {
@@ -36,13 +40,14 @@ public class ClassificationController {
             // = ImageIO.write(imageTypeConverter.matToBufferedImage(matImage), "jpg", new File("./processedResizedImg.jpg"));
             Mat normalizedMatImage = imgPreprocessor.normalizeImage(matImage);
             //System.out.println("Normalized value in controller at (100,100): " + normalizedMatImage.get(100, 100)[0]);
+            System.out.println(normalizedMatImage.dims());
 
             Image djlImage = imageTypeConverter.matToDJLImage(normalizedMatImage);
 
             //Image djlImage = ImageFactory.getInstance().fromInputStream(image.getInputStream());
-            Classifications result = InferenceService.predict(djlImage);
+            Classifications result = DJLInferenceService.predict(djlImage);
 
-            System.out.println("result: " + result.getProbabilities());
+            System.out.println("result: ");
 
             //for debugging
             BufferedImage bufferedImage = imageTypeConverter.matToBufferedImage(normalizedMatImage);
@@ -53,5 +58,14 @@ public class ClassificationController {
         }
 
         return res;
+    }
+
+    @PostMapping("/v2/upload")
+    public void classifyV2(MultipartFile image) {
+        TfInferenceService inferenceService = new TfInferenceService();
+        SavedModelBundle model = inferenceService.loadModel();
+
+        NdArray input_matrix = NdArrays.ofFloats(Shape.of(0, 240, 240, 3));
+        System.out.println("a");
     }
 }
