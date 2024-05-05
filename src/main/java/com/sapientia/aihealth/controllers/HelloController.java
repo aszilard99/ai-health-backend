@@ -1,10 +1,10 @@
 package com.sapientia.aihealth.controllers;
 
-import ai.djl.modality.Classifications;
+/*import ai.djl.modality.Classifications;
 import ai.djl.modality.cv.Image;
 import ai.djl.modality.cv.ImageFactory;
 import ai.djl.translate.TranslateException;
-import com.sapientia.aihealth.ai.classification.DJLInferenceService;
+import com.sapientia.aihealth.ai.classification.DJLInferenceService;*/
 import com.sapientia.aihealth.util.CustomImageReader;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,9 +13,9 @@ import java.awt.image.BufferedImage;
 
 @RestController
 public class HelloController {
-    @GetMapping("/")
+    /*@GetMapping("/")
     public Double index() {
-        Classifications result;
+       /Classifications result;
         double probability = 0;
         try {
             //Image img2 = ImageFactory.getInstance().fromFile(Paths.get("N48.jpeg"));
@@ -32,5 +32,5 @@ public class HelloController {
             e.printStackTrace();
         }
         return null;
-    }
+    }*/
 }

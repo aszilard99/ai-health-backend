@@ -1,6 +1,6 @@
 package com.sapientia.aihealth.ai.classification;
 
-import ai.djl.MalformedModelException;
+/*import ai.djl.MalformedModelException;
 import ai.djl.inference.Predictor;
 import ai.djl.modality.Classifications;
 import ai.djl.modality.cv.Image;
@@ -54,3 +54,4 @@ public class DJLInferenceService {
         return getPredictor().predict(img);
     }
 }
+*/

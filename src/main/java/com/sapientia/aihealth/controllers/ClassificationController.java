@@ -1,8 +1,8 @@
 package com.sapientia.aihealth.controllers;
 
-import ai.djl.modality.Classifications;
+/*import ai.djl.modality.Classifications;
 import ai.djl.modality.cv.Image;
-import com.sapientia.aihealth.ai.classification.DJLInferenceService;
+import com.sapientia.aihealth.ai.classification.DJLInferenceService;*/
 import com.sapientia.aihealth.ai.classification.TfInferenceService;
 import com.sapientia.aihealth.ai.preprocessing.ImagePreprocessingService;
 import com.sapientia.aihealth.util.ImageTypeConverter;
@@ -11,10 +11,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.tensorflow.SavedModelBundle;
+import org.tensorflow.Tensor;
 import org.tensorflow.ndarray.IntNdArray;
 import org.tensorflow.ndarray.NdArray;
 import org.tensorflow.ndarray.NdArrays;
 import org.tensorflow.ndarray.Shape;
+import org.tensorflow.op.image.DecodeImage;
+import org.tensorflow.op.image.DecodeJpeg;
+import org.tensorflow.types.TFloat32;
+import org.tensorflow.types.TUint8;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -23,7 +28,7 @@ import java.io.File;
 @RestController
 public class ClassificationController {
 
-    @PostMapping("/v1/upload")
+    /*@PostMapping("/v1/upload")
     public boolean classifyV1(MultipartFile image){
         boolean res = false;
 
@@ -58,14 +63,19 @@ public class ClassificationController {
         }
 
         return res;
-    }
+    }*/
 
     @PostMapping("/v2/upload")
     public void classifyV2(MultipartFile image) {
         TfInferenceService inferenceService = new TfInferenceService();
         SavedModelBundle model = inferenceService.loadModel();
 
-        NdArray input_matrix = NdArrays.ofFloats(Shape.of(0, 240, 240, 3));
+        ImageTypeConverter imageTypeConverter = new ImageTypeConverter();
+
+        Tensor tensor = imageTypeConverter.multipartFileToTensorV1(image);
+
+
+
         System.out.println("a");
     }
 }
