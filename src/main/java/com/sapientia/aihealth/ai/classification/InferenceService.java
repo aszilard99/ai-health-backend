@@ -4,6 +4,7 @@ import ai.djl.MalformedModelException;
 import ai.djl.inference.Predictor;
 import ai.djl.modality.Classifications;
 import ai.djl.modality.cv.Image;
+import ai.djl.modality.cv.translator.ImageClassificationTranslator;
 import ai.djl.repository.zoo.Criteria;
 import ai.djl.repository.zoo.ModelNotFoundException;
 import ai.djl.repository.zoo.ZooModel;
@@ -23,9 +24,9 @@ public class InferenceService {
         try {
             Criteria<Image, Classifications> criteria = Criteria.builder()
                     .setTypes(Image.class, Classifications.class)
-                    .optModelPath(Paths.get("simple-cnn-kaggle-brain-converted"))
+                    .optModelPath(Paths.get("vgg16extended-kaggle-brain"))
                     //.optTranslator(ImageClassificationTranslator.builder().setSynsetArtifactName("synset.txt").build())
-                    .optModelName("saved_model")
+                    //.optModelName("saved_model")
                     .optEngine("TensorFlow")
                     .build();
 

@@ -1,6 +1,8 @@
 package com.sapientia.aihealth.controllers;
 
+import ai.djl.modality.Classifications;
 import ai.djl.modality.cv.Image;
+import ai.djl.modality.cv.ImageFactory;
 import com.sapientia.aihealth.ai.classification.InferenceService;
 import com.sapientia.aihealth.ai.preprocessing.ImagePreprocessingService;
 import com.sapientia.aihealth.util.ImageTypeConverter;
@@ -37,12 +39,14 @@ public class ClassificationController {
 
             Image djlImage = imageTypeConverter.matToDJLImage(normalizedMatImage);
 
-            InferenceService.predict(djlImage);
+            //Image djlImage = ImageFactory.getInstance().fromInputStream(image.getInputStream());
+            Classifications result = InferenceService.predict(djlImage);
 
-            /*//for debugging
-            //for some reason after normalizing, the ImageIO.write function cant create a jpg from the mat file
+            System.out.println("result: " + result.getProbabilities());
+
+            //for debugging
             BufferedImage bufferedImage = imageTypeConverter.matToBufferedImage(normalizedMatImage);
-            res = ImageIO.write(bufferedImage, "jpg", new File("./processedNormalizedImg.jpg"));*/
+            res = ImageIO.write(bufferedImage, "jpg", new File("./javaProcessed.jpg"));
 
         } catch (Exception e) {
             e.printStackTrace();
