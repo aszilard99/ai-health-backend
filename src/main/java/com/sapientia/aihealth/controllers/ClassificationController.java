@@ -93,8 +93,8 @@ public class ClassificationController {
 
             Result res = model.function("serving_default").call(feed_dict);
 
-
-            System.out.println("a");
+            Tensor resTensor = res.get(0);
+            System.out.println(resTensor);
         } catch (IOException e) {
             e.printStackTrace();
         }

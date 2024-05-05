@@ -9,10 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.tensorflow.Graph;
 import org.tensorflow.Session;
 import org.tensorflow.Tensor;
-import org.tensorflow.ndarray.ByteNdArray;
-import org.tensorflow.ndarray.IntNdArray;
-import org.tensorflow.ndarray.NdArrays;
-import org.tensorflow.ndarray.Shape;
+import org.tensorflow.ndarray.*;
 import org.tensorflow.ndarray.buffer.ByteDataBuffer;
 import org.tensorflow.ndarray.buffer.IntDataBuffer;
 import org.tensorflow.op.Ops;
@@ -67,19 +64,20 @@ public class ImageTypeConverter {
         raster.getPixels(0, 0, width, height, pixels);
 
         //int[][][] reshapedImage = new int[width][height][numBands];
-        IntNdArray input_matrix = NdArrays.ofInts(Shape.of(width, height, numBands));
+        FloatNdArray input_matrix = NdArrays.ofFloats(Shape.of(1, width, height, numBands));
 
         int counter = 0;
         for (int channel = 0; channel < numBands; channel++) {
             for (int h = 0; h < height; h++) {
                 for (int w = 0 ; w < width; w++) {
-                    input_matrix.set(NdArrays.scalarOf(pixels[counter]),w,h,channel);
+                    //TODO this division by float normalization might need tweaking to produce correct float values
+                    input_matrix.set(NdArrays.scalarOf(pixels[counter] / 255.0f ),0,w,h,channel);
                     counter++;
                 }
             }
         }
 
-        Tensor tensor = TInt32.tensorOf(input_matrix);
+        Tensor tensor = TFloat32.tensorOf(input_matrix);
 
         return tensor;
     }
