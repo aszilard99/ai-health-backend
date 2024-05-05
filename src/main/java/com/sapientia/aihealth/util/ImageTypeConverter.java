@@ -61,6 +61,8 @@ public class ImageTypeConverter {
 
             Tensor reshapedImage = reshape(raster);
 
+
+
             //decodeImageToTensor(raster);
 
             return null; //TUint8.tensorOf(byteNdArray);
@@ -84,7 +86,7 @@ public class ImageTypeConverter {
         raster.getPixels(0, 0, width, height, pixels);
 
         //int[][][] reshapedImage = new int[width][height][numBands];
-        IntNdArray input_matrix = NdArrays.ofInts(Shape.of(240, 240, 3));
+        IntNdArray input_matrix = NdArrays.ofInts(Shape.of(width, height, numBands));
 
         int counter = 0;
         for (int channel = 0; channel < numBands; channel++) {
