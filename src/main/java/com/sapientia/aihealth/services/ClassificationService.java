@@ -19,8 +19,7 @@ public class ClassificationService {
 
             MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
             //TODO i might need to change the type of this image file idk
-            body.add("filename", image.getOriginalFilename());
-            body.add("file", image.getBytes());
+            body.add("file", image.getResource());
 
             String serverUrl = "http://127.0.0.1:5000/predict";
             HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
