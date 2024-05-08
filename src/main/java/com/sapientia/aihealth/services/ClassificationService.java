@@ -18,7 +18,6 @@ public class ClassificationService {
             headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
             MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-            //TODO i might need to change the type of this image file idk
             body.add("file", image.getResource());
 
             String serverUrl = "http://127.0.0.1:5000/predict";
