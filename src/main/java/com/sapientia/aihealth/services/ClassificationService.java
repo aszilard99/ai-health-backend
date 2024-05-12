@@ -20,6 +20,7 @@ public class ClassificationService {
             MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
             body.add("file", image.getResource());
 
+            //TODO this url might have to be changed when running inside containers
             String serverUrl = "http://127.0.0.1:5000/predict";
             HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
             RestTemplate restTemplate = new RestTemplate();
