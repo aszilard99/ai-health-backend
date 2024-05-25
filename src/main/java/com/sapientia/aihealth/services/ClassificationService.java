@@ -20,7 +20,7 @@ public class ClassificationService {
             body.add("file", image.getResource());
 
             //TODO this url might have to be changed when running inside containers
-            String serverUrl = "http://localhost:5000/predict";
+            String serverUrl = "http://inference-microservice:5000/predict";
             HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
             RestTemplate restTemplate = new RestTemplate();
             ResponseEntity<String> response = restTemplate.postForEntity(serverUrl, requestEntity, String.class);
