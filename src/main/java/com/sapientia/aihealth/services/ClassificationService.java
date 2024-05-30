@@ -20,7 +20,7 @@ public class ClassificationService {
             body.add("file", image.getResource());
 
             //TODO this url might have to be changed when running inside containers
-            String serverUrl = "http://inference-microservice:5000/predict";
+            String serverUrl = "http://localhost:5000/predict";
             HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
             RestTemplate restTemplate = new RestTemplate();
             ResponseEntity<String> response = restTemplate.postForEntity(serverUrl, requestEntity, String.class);
@@ -29,6 +29,10 @@ public class ClassificationService {
 
         } catch (HttpClientErrorException.UnprocessableEntity e) {
             return ResponseEntity.unprocessableEntity().body("File extension is not supported");
+        }catch (HttpClientErrorException.UnsupportedMediaType e) {
+            return ResponseEntity.status(415).body("Image has to be grayscale");
+        } catch (HttpClientErrorException e) {
+            return ResponseEntity.status(472).body("Image resolution is too small, it has to be at least 50x50");
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
