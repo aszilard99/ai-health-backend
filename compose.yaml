@@ -1,0 +1,37 @@
+version: "3.7"
+services:
+    ai-health-backend:
+        container_name: ai-health-backend
+        build:
+            context: ./ai-health-backend
+        ports:
+            - 8080:8080
+        depends_on:
+            - inference-microservice
+        networks:
+            - ml-network
+    
+    inference-microservice:
+        container_name: inference-microservice
+        build:
+            context: ./inference-microservice
+        environment:
+            - FLASK_ENV=dev
+            - FLASK_APP=app.py
+            - FLASK_RUN_HOST=0.0.0.0
+        ports:
+            - 5000:5000
+        networks:
+            - ml-network
+    ai-health-frontend:
+        container_name: ai-health-frontend
+        build:
+            context: ./ai-health-frontend
+        ports:
+            - 3000:3000
+        depends_on:
+            - ai-health-backend
+        networks:
+            - ml-network
+networks:
+    ml-network:
